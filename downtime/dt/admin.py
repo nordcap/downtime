@@ -5,7 +5,8 @@ from .models import TypeDownTime, ObjectDownTime, WorkDownTime, DownTime
 # Register your models here.
 @admin.register(TypeDownTime)
 class TypeDownTimeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'order',)
+    list_display = ('name', 'comment', 'order',)
+    list_editable = ('comment', 'order',)
 
 
 @admin.register(ObjectDownTime)
