@@ -28,4 +28,4 @@ class DownTimeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DownTime
-        fields = ("date", "type_downtime", "amount",)
+        fields = ("date", "type_downtime", "amount", "smena",)

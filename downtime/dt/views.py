@@ -1,4 +1,7 @@
+import datetime
+
 from django.shortcuts import render
+
 from rest_framework.response import Response
 
 from rest_framework.views import APIView
@@ -10,8 +13,9 @@ from .serializers import WorkDownTimeSerializer, WorkDownTimeDetailSerializer, D
 class WorkDownTimeListView(APIView):
     """вывод работ производимых в определенный день"""
 
-    def get(self, request):
-        queryset = WorkDownTime.objects.filter(date='2020-04-12')
+    def get(self, request, year, month, day):
+        search_date = datetime.date(year, month, day)
+        queryset = WorkDownTime.objects.filter(date=search_date)
         serializer = WorkDownTimeSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -28,7 +32,8 @@ class WorkDownTimeDetailView(APIView):
 class DownTimeListView(APIView):
     """Вывод данных по простоям за день"""
 
-    def get(self, request):
-        queryset = DownTime.objects.filter(date='2020-04-12')
+    def get(self, request, year, month, day):
+        search_date = datetime.date(year, month, day)
+        queryset = DownTime.objects.filter(date=search_date)
         serializer = DownTimeSerializer(queryset, many=True)
         return Response(serializer.data)
