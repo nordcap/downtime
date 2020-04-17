@@ -33,14 +33,15 @@ class ObjectDownTime(models.Model):
 
 
 # Комментарии к производимым каждый день работам
-class WorkDownTime(models.Model):
+class Work(models.Model):
     date = models.DateField(verbose_name="Дата работ", db_index=True, default=timezone.now)
     obj = models.ForeignKey(ObjectDownTime, on_delete=models.PROTECT, verbose_name="Объект")
-    comment_one = models.CharField(max_length=1000, verbose_name="Комментарий к работам в 1 смену", default='', blank=True)
-    comment_two = models.CharField(max_length=1000, verbose_name="Комментарий к работам в 2 смену", default='', blank=True)
+    type = models.ManyToManyField(TypeDownTime, through="DownTime", through_fields=('work', 'type'), null=True)
+    comment_one = models.CharField(max_length=255, verbose_name="Комментарий к работам в 1 смену", default='', blank=True)
+    comment_two = models.CharField(max_length=255, verbose_name="Комментарий к работам в 2 смену", default='', blank=True)
 
     def __str__(self):
-        return "{0}: {1}".format(self.date, self.obj)
+        return "{0} на  {1}".format(self.date, self.obj)
 
     class Meta:
         verbose_name = "Производимые работы"
@@ -50,19 +51,19 @@ class WorkDownTime(models.Model):
 
 # Рабочая таблица - время простоев оборудования
 class DownTime(models.Model):
-    SMENA = (
+    smena = (
         ('1', '1 смена'),
         ('2', '2 смена')
     )
-    date = models.DateField(verbose_name="Дата", db_index=True, default=timezone.now)
-    smena = models.CharField(max_length=1, choices=SMENA, verbose_name="Смена", default='1')
-    type_downtime = models.ForeignKey(TypeDownTime, on_delete=models.PROTECT, verbose_name="Тип простоя")
+    work = models.ForeignKey(Work, on_delete=models.CASCADE, verbose_name="Работы", related_name='works')
+    type = models.ForeignKey(TypeDownTime, on_delete=models.CASCADE, verbose_name="Тип простоя", related_name='types')
     amount = models.TimeField(verbose_name="Время простоя")
+    smena = models.CharField(max_length=1, choices=smena, verbose_name="Смена", default='1')
 
     def __str__(self):
-        return "{0} - {1}".format(self.date, self.type_downtime)
+        return "{0} {1} {2}".format(self.work, self.type, self.smena)
 
     class Meta:
         verbose_name = "Простои"
         verbose_name_plural = "Простои"
-        ordering = ['-date']
+        ordering = ['-work']

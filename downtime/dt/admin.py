@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import TypeDownTime, ObjectDownTime, WorkDownTime, DownTime
+from .models import TypeDownTime, ObjectDownTime, Work, DownTime
 
 
 # Register your models here.
@@ -14,11 +14,13 @@ class ObjectDownTimeAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
 
-@admin.register(WorkDownTime)
-class WorkDownTimeAdmin(admin.ModelAdmin):
-    list_display = ('date', 'comment_one', 'comment_two',)
+@admin.register(Work)
+class WorkAdmin(admin.ModelAdmin):
+    list_display = ('date', 'obj', 'comment_one', 'comment_two',)
+    list_editable = ('comment_one', 'comment_two',)
 
 
 @admin.register(DownTime)
 class DownTimeAdmin(admin.ModelAdmin):
-    list_display = ('date', 'type_downtime', 'amount',)
+    list_display = ('work', 'type', 'amount', 'smena')
+    list_editable = ('type', 'amount', 'smena')

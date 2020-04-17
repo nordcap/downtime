@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import WorkDownTime, DownTime, ObjectDownTime
+from .models import Work, DownTime, ObjectDownTime
 
 
 # class ObjectDownTimeSerializer(serializers.ModelSerializer):
@@ -17,7 +17,7 @@ class CommentSerializer(serializers.ModelSerializer):
     # obj = ObjectDownTimeSerializer()
 
     class Meta:
-        model = WorkDownTime
+        model = Work
         fields = "__all__"
 
 
