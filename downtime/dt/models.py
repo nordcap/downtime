@@ -35,8 +35,8 @@ class ObjectDownTime(models.Model):
 # Комментарии к производимым каждый день работам
 class Work(models.Model):
     date = models.DateField(verbose_name="Дата работ", db_index=True, default=timezone.now)
-    obj = models.ForeignKey(ObjectDownTime, on_delete=models.PROTECT, verbose_name="Объект")
-    type = models.ManyToManyField(TypeDownTime, through="DownTime", through_fields=('work', 'type'), null=True)
+    obj = models.ForeignKey(ObjectDownTime, on_delete=models.PROTECT, verbose_name="Объект", unique_for_date="date")
+    type = models.ManyToManyField(TypeDownTime, through="DownTime", through_fields=('work', 'type'))
     comment_one = models.CharField(max_length=255, verbose_name="Комментарий к работам в 1 смену", default='', blank=True)
     comment_two = models.CharField(max_length=255, verbose_name="Комментарий к работам в 2 смену", default='', blank=True)
 
@@ -61,9 +61,10 @@ class DownTime(models.Model):
     smena = models.CharField(max_length=1, choices=smena, verbose_name="Смена", default='1')
 
     def __str__(self):
-        return "{0} {1} {2}".format(self.work, self.type, self.smena)
+        return "{0} {1} смена {2}".format(self.work, self.type, self.smena)
 
     class Meta:
         verbose_name = "Простои"
         verbose_name_plural = "Простои"
         ordering = ['-work']
+        unique_together = ["work", "type", "smena"]
