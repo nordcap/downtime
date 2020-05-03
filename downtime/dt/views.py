@@ -14,6 +14,10 @@ from .models import Work, DownTime, TypeDownTime, ObjectDownTime
 from .serializers import WorkSerializer, DownTimeSerializer
 
 
+def index(request):
+    return render(request, 'dt/index.html')
+
+
 class DownTimeList(APIView):
     def get(self, request, year=2020, month=1, day=1):
         search_date = datetime.date(year, month, day)

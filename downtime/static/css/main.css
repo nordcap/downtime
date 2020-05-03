@@ -1,0 +1,10 @@
+.table thead th {
+    vertical-align: middle;
+}
+
+.row-time>td{
+    padding: 0;
+}
+.row-time>td>input{
+    width: 100%;
+}

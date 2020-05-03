@@ -1,8 +1,9 @@
 from django.urls import path
 
-from .views import WorkList, WorkDetail, DownTimeList
+from .views import *
 
 urlpatterns = [
+    path('', index),
     path('work/<int:year>/<int:month>/<int:day>/', WorkList.as_view()),
     path('work/create/', WorkList.as_view()),
     path('work/<int:pk>/', WorkDetail.as_view()),
